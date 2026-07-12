@@ -13,20 +13,7 @@ import {
   ActivityLog
 } from './types.js';
 
-const _dirname = (() => {
-  try {
-    if (typeof __dirname !== 'undefined') {
-      return __dirname;
-    }
-  } catch (e) {}
-  try {
-    if (import.meta && import.meta.url) {
-      return path.dirname(fileURLToPath(import.meta.url));
-    }
-  } catch (e) {}
-  return path.resolve(process.cwd(), 'backend');
-})();
-const DATA_DIR = path.resolve(_dirname, './data');
+const DATA_DIR = path.resolve(process.cwd(), 'backend', 'data');
 
 // Ensure data directory exists
 if (!fs.existsSync(DATA_DIR)) {

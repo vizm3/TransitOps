@@ -28,9 +28,10 @@ async function startServer() {
   // In production, serve the compiled static build
   // In development, hook up Vite's dev server middleware
   if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.resolve(_dirname, 'dist')));
+    const distPath = path.resolve(process.cwd(), 'dist');
+    app.use(express.static(distPath));
     app.get('*', (req, res) => {
-      res.sendFile(path.resolve(_dirname, 'dist', 'index.html'));
+      res.sendFile(path.resolve(distPath, 'index.html'));
     });
   } else {
     const { createServer: createViteServer } = await import('vite');
@@ -44,7 +45,7 @@ async function startServer() {
     app.use('*', async (req, res, next) => {
       const url = req.originalUrl;
       try {
-        let template = fs.readFileSync(path.resolve(_dirname, 'index.html'), 'utf-8');
+        let template = fs.readFileSync(path.resolve(process.cwd(), 'index.html'), 'utf-8');
         template = await vite.transformIndexHtml(url, template);
         res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
       } catch (e) {
